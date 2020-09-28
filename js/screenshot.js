@@ -24,6 +24,12 @@
 window.GLPIMediaCapture = new function() {
    const self = this;
 
+   this.evalTimelineAction = function() {
+      if (typeof ImageCapture === "undefined") {
+         $('#attach_screenshot_timeline').hide();
+      }
+   }
+
    function captureScreenshot(form_obj) {
       navigator.mediaDevices.getDisplayMedia({video: true})
       .then(mediaStream => {
@@ -70,7 +76,6 @@ window.GLPIMediaCapture = new function() {
          const img_format = 'image/png';
          const canvas = edit_panel.find('#screenshotFull').get(0);
          const base64 = canvas.toDataURL(img_format);
-            //.replace('data:'+img_format+',', 'data:image/octet-stream');
          const ajax_data = {
             itemtype: itemtype,
             items_id: items_id,
