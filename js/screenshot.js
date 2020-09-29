@@ -82,6 +82,7 @@ window.GLPIMediaCapture = new function() {
             format: img_format,
             img: base64
          };
+         $(this).attr('disabled', true);
          $.ajax({
             type: 'POST',
             url: CFG_GLPI.root_doc+"/"+GLPI_PLUGINS_PATH.screenshot+"/ajax/screenshot.php",
