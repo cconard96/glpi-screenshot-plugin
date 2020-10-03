@@ -21,6 +21,12 @@
  */
 
 include ('../../../inc/includes.php');
+
+$plugin = new Plugin();
+if (!$plugin->isActivated('screenshot')) {
+   Html::displayNotFoundError();
+}
+
 Html::header_nocache();
 
 Session::checkLoginUser();
