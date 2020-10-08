@@ -35,38 +35,42 @@ function plugin_init_screenshot()
 function plugin_version_screenshot()
 {
 	return [
-	      'name'         => __('Screenshot', 'screenshot'),
-	      'version'      => PLUGIN_SCREENSHOT_VERSION,
-	      'author'       => 'Curtis Conard',
-	      'license'      => 'GPLv2',
-	      'homepage'     =>'https://github.com/cconard96/glpi-screenshot-plugin',
-	      'requirements' => [
-	         'glpi'   => [
-	            'min' => PLUGIN_SCREENSHOT_MIN_GLPI,
-	            'max' => PLUGIN_SCREENSHOT_MAX_GLPI
-	         ]
-	      ]
-	   ];
+      'name'         => __('Screenshot', 'screenshot'),
+      'version'      => PLUGIN_SCREENSHOT_VERSION,
+      'author'       => 'Curtis Conard',
+      'license'      => 'GPLv2',
+      'homepage'     =>'https://github.com/cconard96/glpi-screenshot-plugin',
+      'requirements' => [
+         'glpi'   => [
+            'min' => PLUGIN_SCREENSHOT_MIN_GLPI,
+            'max' => PLUGIN_SCREENSHOT_MAX_GLPI
+         ]
+      ]
+   ];
 }
 
 function plugin_screenshot_check_prerequisites()
 {
 	if (!method_exists('Plugin', 'checkGlpiVersion')) {
-	      $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
-	      $matchMinGlpiReq = version_compare($version, PLUGIN_SCREENSHOT_MIN_GLPI, '>=');
-	      $matchMaxGlpiReq = version_compare($version, PLUGIN_SCREENSHOT_MAX_GLPI, '<');
-	      if (!$matchMinGlpiReq || !$matchMaxGlpiReq) {
-	         echo vsprintf(
-	            'This plugin requires GLPI >= %1$s and < %2$s.',
-	            [
-	               PLUGIN_SCREENSHOT_MIN_GLPI,
-	               PLUGIN_SCREENSHOT_MAX_GLPI,
-	            ]
-	         );
-	         return false;
-	      }
-	   }
-	   return true;
+      $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+      $matchMinGlpiReq = version_compare($version, PLUGIN_SCREENSHOT_MIN_GLPI, '>=');
+      $matchMaxGlpiReq = version_compare($version, PLUGIN_SCREENSHOT_MAX_GLPI, '<');
+      if (!$matchMinGlpiReq || !$matchMaxGlpiReq) {
+         echo vsprintf(
+            'This plugin requires GLPI >= %1$s and < %2$s.',
+            [
+               PLUGIN_SCREENSHOT_MIN_GLPI,
+               PLUGIN_SCREENSHOT_MAX_GLPI,
+            ]
+         );
+         return false;
+      }
+   }
+   if (empty($_SERVER['HTTPS']) && !in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+      echo 'This plugin requires GLPI be served over HTTPS';
+      return false;
+   }
+   return true;
 }
 
 function plugin_screenshot_check_config()
