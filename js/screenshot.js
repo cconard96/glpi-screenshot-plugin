@@ -82,9 +82,20 @@ window.GLPIMediaCapture = new function() {
          // Remove any previous event handlers
          form_obj.off();
          form_obj.html(`
-            <canvas id="screenshotPreview" width="${preview_size[0]}" height="${preview_size[1]}"></canvas>
-            <canvas id="screenshotFull" width="200" height="180" style="display: none"></canvas>
-            <button type="submit" name="upload" class="vsubmit">${__('Upload')}</button>
+            <table class="tab_cadre_fixe">
+               <tr class="headerRow"><th>New Item - Screenshot</th></tr>
+               <tr>
+                   <td>
+                     <canvas id="screenshotPreview" width="${preview_size[0]}" height="${preview_size[1]}"></canvas>
+                     <canvas id="screenshotFull" width="200" height="180" style="display: none"></canvas>
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       <button type="submit" name="upload" class="vsubmit">${__('Upload')}</button>
+                   </td>
+               </tr>
+            </table>
          `);
          // Bind upload action handler
          form_obj.on('click', 'button[name="upload"]', function(e) {
@@ -152,7 +163,6 @@ window.GLPIMediaCapture = new function() {
                   type: 'POST',
                   url: CFG_GLPI.root_doc+"/"+GLPI_PLUGINS_PATH.screenshot+"/ajax/screenshot.php",
                   data: data,
-                  //contentType: 'video/webm',
                   processData: false,
                   contentType: false
                }).done(function() {
@@ -165,9 +175,20 @@ window.GLPIMediaCapture = new function() {
             // Remove any previous event handlers
             form_obj.off();
             form_obj.html(`
-               <canvas id="screenshotPreview" width="${preview_size[0]}" height="${preview_size[1]}"></canvas>
-               <button type="button" name="stop" class="vsubmit">${__('Stop')}</button>
-            `);
+            <table class="tab_cadre_fixe">
+               <tr class="headerRow"><th>New Item - Screenshot</th></tr>
+               <tr>
+                   <td>
+                     <canvas id="screenshotPreview" width="${preview_size[0]}" height="${preview_size[1]}"></canvas>
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       <button type="button" name="stop" class="vsubmit">${__('Stop recording')}</button>
+                   </td>
+               </tr>
+            </table>
+         `);
             $(form_obj).on('click', 'button[name="stop"]', stopRecording);
             $(form_obj).on('click', 'button[name="upload"]', upload);
             imageCapture = new ImageCapture(track);
