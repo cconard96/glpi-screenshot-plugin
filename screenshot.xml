@@ -3,7 +3,7 @@
     <name>Screenshot</name>
     <key>screenshot</key>
     <state>stable</state>
-    <logo/>
+    <logo>https://raw.githubusercontent.com/cconard96/glpi-screenshot-plugin/master/Logo.png</logo>
     <description>
         <short>
             <en>Take a screenshot directly from GLPI and attach it to a ticket, change or problem</en>
@@ -40,5 +40,7 @@ This plugin relies on some WebRTC features that are only available on a few brow
             <tag>Helpdesk</tag>
         </en>
     </tags>
-    <screenshots/>
+    <screenshots>
+        <screenshot>https://raw.githubusercontent.com/cconard96/glpi-screenshot-plugin/master/Screenshot%20Plugin%20Preview.gif</screenshot>
+    </screenshots>
 </root>
