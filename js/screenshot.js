@@ -35,6 +35,7 @@ window.GLPIMediaCapture = new function() {
    this.evalTimelineAction = function() {
       if (typeof ImageCapture === "undefined") {
          $('#attach_screenshot_timeline').hide();
+         $('#attach_screenrecording_timeline').hide();
       }
    }
 
@@ -199,11 +200,17 @@ window.GLPIMediaCapture = new function() {
          });
    }
 
-   $(document).on('click', '#attach_screenshot_timeline', function(event) {
+   $(document).on('click', '#attach_screenshot_timeline', function() {
       const edit_panel = $($(this).data('editpanel'));
       const itemtype = $(this).data('itemtype');
       const items_id = $(this).data('items_id');
-      //captureScreenshot(edit_panel, itemtype, items_id);
+      captureScreenshot(edit_panel, itemtype, items_id);
+   });
+
+   $(document).on('click', '#attach_screenrecording_timeline', function() {
+      const edit_panel = $($(this).data('editpanel'));
+      const itemtype = $(this).data('itemtype');
+      const items_id = $(this).data('items_id');
       captureScreenRecording(edit_panel, itemtype, items_id);
    });
 }
