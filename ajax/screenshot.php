@@ -35,24 +35,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
    // Bad request method
    die(405);
 }
-if (!isset($_POST['itemtype'], $_POST['items_id'])) {
+if (!isset($_POST['itemtype'], $_POST['items_id'], $_POST['format'])) {
    if (!isset($_POST['img']) || !isset($_FILES['blob'])) {
       // Missing required data
       die(400);
    }
 }
-
-$format_ext_map = [
-   'image/png'    => 'png',
-   'image/jpeg'   => 'jpg',
-   'video/webm'   => 'webm'
-];
-
-if (!isset($_POST['format'], $format_ext_map[$_POST['format']])) {
-   // Unsupported format or missing format
+$allowed_formats = array_merge(array_keys(PluginScreenshotScreenshot::getScreenshotFormats()),
+   array_keys(PluginScreenshotScreenshot::getScreenRecordingFormats()));
+if (!in_array($_POST['format'], $allowed_formats, true)) {
    die(400);
 }
-$ext = $format_ext_map[$_POST['format']];
+
+$ext = PluginScreenshotScreenshot::getExtensionForMime($_POST['format']);
 
 if (isset($_POST['img'])) {
    // Handle screenshot upload
