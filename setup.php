@@ -38,7 +38,7 @@ function plugin_version_screenshot()
       'name'         => __('Screenshot', 'screenshot'),
       'version'      => PLUGIN_SCREENSHOT_VERSION,
       'author'       => 'Curtis Conard',
-      'license'      => 'GPLv2',
+      'license'      => 'GPLv2+',
       'homepage'     =>'https://github.com/cconard96/glpi-screenshot-plugin',
       'requirements' => [
          'glpi'   => [
