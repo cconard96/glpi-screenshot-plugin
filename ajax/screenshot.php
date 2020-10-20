@@ -41,9 +41,10 @@ if (!isset($_POST['itemtype'], $_POST['items_id'], $_POST['format'])) {
       die(400);
    }
 }
-$allowed_formats = array_merge(array_keys(PluginScreenshotScreenshot::getScreenshotFormats()),
-   array_keys(PluginScreenshotScreenshot::getScreenRecordingFormats()));
-if (!in_array($_POST['format'], $allowed_formats, true)) {
+
+$config = Config::getConfigurationValues('plugin:screenshot');
+if ((isset($_POST['img']) && $_POST['format'] !== $config['screenshot_format']) ||
+   (isset($_FILES['blob']) && $_POST['format'] !== $config['screenrecording_format'])) {
    die(400);
 }
 

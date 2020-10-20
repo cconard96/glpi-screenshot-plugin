@@ -50,4 +50,31 @@ class PluginScreenshotScreenshot extends CommonGLPI {
          __("Screen Recording")."</li>";
       echo Html::scriptBlock('window.GLPIMediaCapture.evalTimelineAction();');
    }
+
+   public static function getScreenshotFormats(): array
+   {
+      return [
+         'image/png'    => 'PNG',
+         'image/jpg'    => 'JPG / JPEG',
+      ];
+   }
+
+   public static function getScreenRecordingFormats(): array
+   {
+      return [
+         'video/webm'   => 'WEBm',
+         'video/mp4'    => 'MP4',
+      ];
+   }
+
+   public static function getExtensionForMime(string $mime): ?string
+   {
+      $mappings = [
+         'image/png'    => 'png',
+         'image/jpg'    => 'jpg',
+         'video/webm'   => 'webm',
+         'video/mp4'    => 'mp4',
+      ];
+      return $mappings[$mime] ?? null;
+   }
 }

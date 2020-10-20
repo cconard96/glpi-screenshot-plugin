@@ -29,6 +29,8 @@ window.GLPIMediaCapture = new function() {
     */
    const preview_size = [200, 180];
 
+   let config = {};
+
    /**
     * Check if the browser supports this feature. If not, this will hide the timeline button.
     */
@@ -100,7 +102,7 @@ window.GLPIMediaCapture = new function() {
          // Bind upload action handler
          form_obj.on('click', 'button[name="upload"]', function(e) {
             e.preventDefault();
-            const img_format = 'image/png';
+            const img_format = config['screenshot_format'];
             const canvas = form_obj.find('#screenshotFull').get(0);
             const base64 = canvas.toDataURL(img_format);
             const ajax_data = {
@@ -137,7 +139,7 @@ window.GLPIMediaCapture = new function() {
       navigator.mediaDevices.getDisplayMedia({video: true})
          .then(mediaStream => {
             const track = mediaStream.getVideoTracks()[0];
-            const recorder = new MediaRecorder(mediaStream, {mimeType: 'video/webm'})
+            const recorder = new MediaRecorder(mediaStream, {mimeType: config['screenrecording_format']})
             let blob = null;
 
             const stopRecording = function() {
@@ -158,7 +160,7 @@ window.GLPIMediaCapture = new function() {
                data.append('blob', blob);
                data.append('itemtype', itemtype);
                data.append('items_id', items_id);
-               data.append('format', 'video/webm');
+               data.append('format', config['screenrecording_format']);
                $.ajax({
                   type: 'POST',
                   url: CFG_GLPI.root_doc+"/"+GLPI_PLUGINS_PATH.screenshot+"/ajax/screenshot.php",
@@ -212,7 +214,7 @@ window.GLPIMediaCapture = new function() {
 
                   // Create blob
                   blob = new Blob(chunks, {
-                     type: 'video/webm'
+                     type: config['screenrecording_format']
                   });
                }
             }
@@ -220,6 +222,14 @@ window.GLPIMediaCapture = new function() {
             recorder.start();
          });
    }
+
+   // Get Config
+   $.ajax({
+      type: 'GET',
+      url: CFG_GLPI.root_doc+"/"+GLPI_PLUGINS_PATH.screenshot+"/ajax/config.php",
+   }).done(function(cfg) {
+      config = cfg;
+   });
 
    $(document).on('click', '#attach_screenshot_timeline', function() {
       const edit_panel = $($(this).data('editpanel'));

@@ -30,6 +30,7 @@ function plugin_init_screenshot()
 	$PLUGIN_HOOKS['csrf_compliant']['screenshot'] = true;
    $PLUGIN_HOOKS['timeline_actions']['screenshot'] = [PluginScreenshotScreenshot::class, 'timelineActions'];
    $PLUGIN_HOOKS['add_javascript']['screenshot'][] = 'js/screenshot.js';
+   Plugin::registerClass('PluginScreenshotConfig', ['addtabon' => 'Config']);
 }
 
 function plugin_version_screenshot()
