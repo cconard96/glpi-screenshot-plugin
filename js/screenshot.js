@@ -128,6 +128,21 @@ window.GLPIMediaCapture = new function() {
       });
    }
 
+   function getPreferredBitrate(track) {
+      // Reference Bitrates based on YouTube recommendations
+      // 360@30 - 1 Mbps   | 360@60 - 1.5 Mbps | Pixel Count - 230400
+      // 720@30 - 5 Mbps   | 720@60 - 7.5 Mbps | Pixel Count - 921600
+      // 1080@30 - 8 Mbps  | 1080@60 - 12 Mbps | Pixel Count - 2073600
+      // 1440@30 - 16 Mbps | 1440@60 - 24 Mbps | Pixel Count - 3686400
+      // 2160@30 - 40 Mbps | 2160@60 - 60 Mbps | Pixel Count - 8294400
+
+      const motion_factor = 0.5; // Weight value. How much activity we expect
+      // br = (pixels * f * motion_factor) / 10;
+
+      const settings = track.getSettings();
+      return ((settings.width * settings.height) * settings.frameRate * motion_factor) / 10;
+   }
+
    /**
     * Prompt the user to select a screen device, (re)-build the form, and start the MediaRecorder.
     * Then, this will continually grab frames from the video stream at a rate of 30 FPS and update the preview canvas.
@@ -136,10 +151,14 @@ window.GLPIMediaCapture = new function() {
     * @param {integer} items_id The ID of the item this recording would be attached to.
     */
    function captureScreenRecording(form_obj, itemtype, items_id) {
-      navigator.mediaDevices.getDisplayMedia({video: true})
+      navigator.mediaDevices.getDisplayMedia({video: true, frameRate: 10})
          .then(mediaStream => {
             const track = mediaStream.getVideoTracks()[0];
-            const recorder = new MediaRecorder(mediaStream, {mimeType: config['screenrecording_format']})
+
+            const recorder = new MediaRecorder(mediaStream, {
+               mimeType: config['screenrecording_format'] + ';codecs=vp9',
+               videoBitsPerSecond: getPreferredBitrate(track)
+            })
             let blob = null;
 
             const stopRecording = function() {
