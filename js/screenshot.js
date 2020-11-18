@@ -144,102 +144,123 @@ window.GLPIMediaCapture = new function() {
    }
 
    /**
-    * Prompt the user to select a screen device, (re)-build the form, and start the MediaRecorder.
-    * Then, this will continually grab frames from the video stream at a rate of 30 FPS and update the preview canvas.
+    * Prompt the user to select a screen device, (re)-build the form, and wait for the user to start the MediaRecorder.
+    * Then, this will continually grab frames from the video stream at a rate of 10 FPS and update the preview canvas until the user stops the recording.
+    * They can either restart the recording or upload the last recording.
     * @param {jQuery} form_obj The form object that will be cleared and have the canvases and buttons added to.
     * @param {string} itemtype The type of the item this recording would be attached to.
     * @param {integer} items_id The ID of the item this recording would be attached to.
     */
-   function captureScreenRecording(form_obj, itemtype, items_id) {
+   function showRecordingForm(edit_panel, itemtype, items_id) {
+      edit_panel.empty();
       navigator.mediaDevices.getDisplayMedia({video: true, frameRate: 10})
-         .then(mediaStream => {
-            const track = mediaStream.getVideoTracks()[0];
+      .then(mediaStream => {
+         const track = mediaStream.getVideoTracks()[0];
 
-            const recorder = new MediaRecorder(mediaStream, {
-               mimeType: config['screenrecording_format'] + ';codecs=vp9',
-               videoBitsPerSecond: getPreferredBitrate(track)
-            })
-            let blob = null;
-
-            const stopRecording = function() {
-               recorder.stop();
-               const tracks = mediaStream.getTracks();
-               tracks.forEach(function(track) {
-                  track.stop();
-               });
-               $(this).parent().append(`<button type="button" name="upload" class="vsubmit">${__('Upload')}</button>`);
-               $(this).remove();
-            }
-            const upload = function() {
-               if (blob === null) {
-                  return;
-               }
-               $(this).attr('disabled', true);
-               const data = new FormData();
-               data.append('blob', blob);
-               data.append('itemtype', itemtype);
-               data.append('items_id', items_id);
-               data.append('format', config['screenrecording_format']);
-               $.ajax({
-                  type: 'POST',
-                  url: CFG_GLPI.root_doc+"/"+GLPI_PLUGINS_PATH.screenshot+"/ajax/screenshot.php",
-                  data: data,
-                  processData: false,
-                  contentType: false
-               }).done(function() {
-                  location.reload();
-               });
-            }
-
-            // Clear any previous elements in case this is being reused
-            form_obj.empty();
-            // Remove any previous event handlers
-            form_obj.off();
-            form_obj.html(`
-            <table class="tab_cadre_fixe">
-               <tr class="headerRow"><th>New Item - Screenshot</th></tr>
-               <tr>
-                   <td>
-                     <canvas id="screenshotPreview" width="${preview_size[0]}" height="${preview_size[1]}"></canvas>
-                   </td>
-               </tr>
-               <tr>
-                   <td>
-                       <button type="button" name="stop" class="vsubmit">${__('Stop recording')}</button>
-                   </td>
-               </tr>
-            </table>
-         `);
-            $(form_obj).on('click', 'button[name="stop"]', stopRecording);
-            $(form_obj).on('click', 'button[name="upload"]', upload);
-            imageCapture = new ImageCapture(track);
-
-            const grab_preview_frame = setInterval(function() {
-               if (track.readyState === 'ended') {
-                  clearInterval(grab_preview_frame);
-                  return;
-               }
-               imageCapture.grabFrame().then(img => {
-                  // Depending on how quickly this occurs, some frames may be rendered out of sequence since this isn't blocking.
-                  // It probably doesn't matter much as this is just for the preview
-                  updateCanvases(img, form_obj.find('#screenshotPreview').get(0));
-               }).catch(function() {});
-            }, 1000 / 30); // 30 FPS
-
-            let chunks = [];
-            recorder.ondataavailable = function(event) {
-               if (event.data.size > 0) {
-                  chunks.push(event.data);
-
-                  // Create blob
-                  blob = new Blob(chunks, {
-                     type: config['screenrecording_format']
-                  });
-               }
-            }
-            // Start recording the video stream
-            recorder.start();
+         let recorder = new MediaRecorder(mediaStream, {
+            mimeType: config['screenrecording_format'] + ';codecs=vp9',
+            videoBitsPerSecond: getPreferredBitrate(track),
          });
+         let blob = null;
+
+         const stopRecording = function() {
+            recorder.stop();
+            const tracks = mediaStream.getTracks();
+            tracks.forEach(function(track) {
+               track.stop();
+            });
+            //$(this).parent().append(`<button type="button" name="restart" class="vsubmit">${__('Restart recording')}</button>`);
+            $(this).parent().append(`<button type="button" name="upload" class="vsubmit">${__('Upload')}</button>`);
+            $(this).remove();
+         }
+         const upload = function() {
+            if (blob === null) {
+               return;
+            }
+            $(this).attr('disabled', true);
+            const data = new FormData();
+            data.append('blob', blob);
+            data.append('itemtype', itemtype);
+            data.append('items_id', items_id);
+            data.append('format', config['screenrecording_format']);
+            $.ajax({
+               type: 'POST',
+               url: CFG_GLPI.root_doc+"/"+GLPI_PLUGINS_PATH.screenshot+"/ajax/screenshot.php",
+               data: data,
+               processData: false,
+               contentType: false
+            }).done(function() {
+               location.reload();
+            });
+         }
+
+         $(edit_panel).on('click', 'button[name="stop"]', {}, stopRecording);
+         $(edit_panel).on('click', 'button[name="upload"]', {}, upload);
+         imageCapture = new ImageCapture(track);
+
+         const grab_preview_frame = setInterval(function() {
+            if (track.readyState === 'ended') {
+               clearInterval(grab_preview_frame);
+               return;
+            }
+            imageCapture.grabFrame().then(img => {
+               // Depending on how quickly this occurs, some frames may be rendered out of sequence since this isn't blocking.
+               // It probably doesn't matter much as this is just for the preview
+               updateCanvases(img, edit_panel.find('#screenshotPreview').get(0));
+            }).catch(function() {});
+         }, 1000 / 30); // 30 FPS
+
+         let chunks = [];
+         recorder.ondataavailable = function(event) {
+            if (event.data.size > 0) {
+               chunks.push(event.data);
+
+               // Create blob
+               blob = new Blob(chunks, {
+                  type: config['screenrecording_format']
+               });
+            }
+         }
+         recorder.onstart = function() {
+            console.log("Recorder started");
+         }
+         // Start recording the video stream
+         const startRecording = function() {
+            edit_panel.find('button:not([name="start"])').remove();
+            $(this).parent().append(`<button type="button" name="stop" class="vsubmit">${__('Stop recording')}</button>`);
+            $(this).remove();
+
+            console.log("Recording started by button click");
+            recorder.start();
+         }
+         const restartRecording = function() {
+            if (recorder !== undefined) {
+               try {
+                  recorder.stop();
+               } catch {}
+            }
+            blob = null;
+            showRecordingForm(edit_panel, itemtype, items_id);
+         }
+         $(edit_panel).on('click', 'button[name="start"]', {}, startRecording);
+         //$(edit_panel).on('click', 'button[name="restart"]', {}, restartRecording);
+      });
+
+      $(edit_panel).html(`
+         <table class="tab_cadre_fixe">
+            <tr class="headerRow"><th>New Item - Screenshot</th></tr>
+            <tr>
+                <td>
+                  <canvas id="screenshotPreview" width="${preview_size[0]}" height="${preview_size[1]}"></canvas>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="button" name="start" class="vsubmit">${__('Start recording')}</button>
+                </td>
+            </tr>
+         </table>
+      `);
    }
 
    // Get Config
@@ -261,6 +282,6 @@ window.GLPIMediaCapture = new function() {
       const edit_panel = $($(this).data('editpanel'));
       const itemtype = $(this).data('itemtype');
       const items_id = $(this).data('items_id');
-      captureScreenRecording(edit_panel, itemtype, items_id);
+      showRecordingForm(edit_panel, itemtype, items_id);
    });
 }
