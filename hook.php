@@ -26,8 +26,8 @@ function plugin_screenshot_install()
       echo 'This plugin requires GLPI be served over HTTPS';
       return false;
    }
-   $migration = new Migration(PLUGIN_SCREENSHOT_VERSION);
-   $migration->addRight('plugin_screenshot_recording', CREATE);
+   $migration = new PluginScreenshotMigration(PLUGIN_SCREENSHOT_VERSION);
+   $migration->applyMigrations();
 	return true;
 }
 
