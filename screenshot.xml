@@ -6,7 +6,7 @@
     <logo>https://raw.githubusercontent.com/cconard96/glpi-screenshot-plugin/master/Logo.png</logo>
     <description>
         <short>
-            <en>Take a screenshot directly from GLPI and attach it to a ticket, change or problem</en>
+            <en>Take a screenshot or screen recording directly from GLPI and attach it to a ticket, change or problem</en>
         </short>
         <long>
             <en><![CDATA[
