@@ -20,7 +20,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_SCREENSHOT_VERSION', '1.0.0');
+define('PLUGIN_SCREENSHOT_VERSION', '1.1.0');
 define('PLUGIN_SCREENSHOT_MIN_GLPI', '9.5.0');
 define('PLUGIN_SCREENSHOT_MAX_GLPI', '9.6.0');
 
@@ -31,6 +31,7 @@ function plugin_init_screenshot()
    $PLUGIN_HOOKS['timeline_actions']['screenshot'] = [PluginScreenshotScreenshot::class, 'timelineActions'];
    $PLUGIN_HOOKS['add_javascript']['screenshot'][] = 'js/screenshot.js';
    Plugin::registerClass('PluginScreenshotConfig', ['addtabon' => 'Config']);
+   Plugin::registerClass('PluginScreenshotProfile', ['addtabon' => 'Profile']);
 }
 
 function plugin_version_screenshot()

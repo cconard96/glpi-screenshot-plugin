@@ -85,6 +85,7 @@ if (isset($_POST['img'])) {
    }
 } else if (isset($_FILES['blob'])) {
    // Handle screen recording upload
+   Session::checkRight('plugin_screenshot_recording', CREATE);
 
    // Name format: Screen Recording + Timestamp + random 5 character hex + extension
    $file_name = 'Screen Recording ' . $_SESSION['glpi_currenttime'] . '-' . sprintf('%05X', random_int(0, 1048575)) . '.' . $ext;
