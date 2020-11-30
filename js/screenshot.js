@@ -213,19 +213,6 @@ window.GLPIMediaCapture = new function() {
 
          $(edit_panel).on('click', 'button[name="stop"]', {}, stopRecording);
          $(edit_panel).on('click', 'button[name="upload"]', {}, upload);
-         imageCapture = new ImageCapture(track);
-
-         const grab_preview_frame = setInterval(function() {
-            if (track.readyState === 'ended') {
-               clearInterval(grab_preview_frame);
-               return;
-            }
-            imageCapture.grabFrame().then(img => {
-               // Depending on how quickly this occurs, some frames may be rendered out of sequence since this isn't blocking.
-               // It probably doesn't matter much as this is just for the preview
-               updateCanvases(img, edit_panel.find('#screenshotPreview').get(0));
-            }).catch(function() {});
-         }, 1000 / 30); // 30 FPS
 
          let chunks = [];
          recorder.ondataavailable = function(event) {
@@ -248,6 +235,7 @@ window.GLPIMediaCapture = new function() {
             $(this).remove();
 
             recorder.start();
+            edit_panel.find('#screenshotPreview').get(0).srcObject = recorder.stream;
          }
          const restartRecording = function() {
             if (recorder !== undefined) {
@@ -264,10 +252,10 @@ window.GLPIMediaCapture = new function() {
 
       $(edit_panel).html(`
          <table class="tab_cadre_fixe">
-            <tr class="headerRow"><th>New Item - Screenshot</th></tr>
+            <tr class="headerRow"><th>New Item - Screen Recording</th></tr>
             <tr>
                 <td>
-                  <canvas id="screenshotPreview" width="${preview_size[0]}" height="${preview_size[1]}"></canvas>
+                  <video id="screenshotPreview" width="${preview_size[0]}" height="${preview_size[1]}" autoplay muted></video>
                 </td>
             </tr>
             <tr>
