@@ -51,11 +51,7 @@ class PluginScreenshotConfig extends CommonGLPI
       Dropdown::showFromArray('screenshot_format', PluginScreenshotScreenshot::getScreenshotFormats(), [
          'value' => $config['screenshot_format'] ?? 'image/png'
       ]);
-      echo '</td><td>' ._x('config', 'Screen Recording Format', 'jamf'). '</td><td>';
-      Dropdown::showFromArray('screenrecording_format', PluginScreenshotScreenshot::getScreenRecordingFormats(), [
-         'value' => $config['screenrecording_format'] ?? 'video/webm'
-      ]);
-      echo '</td></tr>';
+      echo '</td><td></td><td></td></tr>';
       echo '</table>';
 
       echo "<table class='tab_cadre_fixe'>";

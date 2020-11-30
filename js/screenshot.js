@@ -155,6 +155,11 @@ window.GLPIMediaCapture = new function() {
       return ((settings.width * settings.height) * settings.frameRate * motion_factor) / 10;
    }
 
+   function getRecordingCodec(requested_format) {
+      const codecs = ['vp9', 'vp8'];
+      return codecs.find(c => MediaRecorder.isTypeSupported(requested_format + ';codecs=' + c))
+   }
+
    /**
     * Prompt the user to select a screen device, (re)-build the form, and wait for the user to start the MediaRecorder.
     * Then, this will continually grab frames from the video stream at a rate of 10 FPS and update the preview canvas until the user stops the recording.
@@ -170,7 +175,7 @@ window.GLPIMediaCapture = new function() {
          const track = mediaStream.getVideoTracks()[0];
 
          let recorder = new MediaRecorder(mediaStream, {
-            mimeType: config['screenrecording_format'] + ';codecs=vp9',
+            mimeType: getRecordingMimeType('video/webm'),
             videoBitsPerSecond: getPreferredBitrate(track),
          });
          let blob = null;
@@ -194,7 +199,7 @@ window.GLPIMediaCapture = new function() {
             data.append('blob', blob);
             data.append('itemtype', itemtype);
             data.append('items_id', items_id);
-            data.append('format', config['screenrecording_format']);
+            data.append('format', 'video/webm');
             $.ajax({
                type: 'POST',
                url: CFG_GLPI.root_doc+"/"+GLPI_PLUGINS_PATH.screenshot+"/ajax/screenshot.php",
@@ -229,7 +234,7 @@ window.GLPIMediaCapture = new function() {
 
                // Create blob
                blob = new Blob(chunks, {
-                  type: config['screenrecording_format']
+                  type: 'video/webm'
                });
             }
          }
