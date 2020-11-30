@@ -32,40 +32,32 @@ window.GLPIMediaCapture = new function() {
    let config = {};
 
    /**
-    * Check if the browser supports this feature. If not, this will hide the timeline button.
-    */
-   this.evalTimelineAction = function() {
-      if (typeof ImageCapture === "undefined") {
-         $('#attach_screenshot_timeline').hide();
-         $('#attach_screenrecording_timeline').hide();
-      }
-   }
-
-   /**
     * Update a preview and full-size canvas based on the supplied image.
     * Each canvas parameter is optional and can be skipped by setting it to null.
     *
-    * @param {ImageBitmap} img The image.
+    * @param {ImageBitmap|HTMLVideoElement} img The image.
     * @param {HTMLCanvasElement} preview The canvas being used to preview the image/frame.
     * @param {HTMLCanvasElement} full The full-size canvas that stores the image/frame. Not needed if doing a recording.
     */
    function updateCanvases(img, preview = null, full = null) {
+      const sourceWidth = img.videoWidth ?? img.width;
+      const sourceHeight = img.videoHeight ?? img.height;
       if (preview !== null) {
          preview.width = preview_size[0];
          preview.height = preview_size[1];
-         let ratio = Math.min(preview.width / img.width, preview.height / img.height);
-         let x = (preview.width - img.width * ratio) / 2;
-         let y = (preview.height - img.height * ratio) / 2;
+         let ratio = Math.min(preview.width / sourceWidth, preview.height / sourceHeight);
+         let x = (preview.width - sourceWidth * ratio) / 2;
+         let y = (preview.height - sourceHeight * ratio) / 2;
          preview.getContext('2d').clearRect(0, 0, preview.width, preview.height);
-         preview.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
-            x, y, img.width * ratio, img.height * ratio);
+         preview.getContext('2d').drawImage(img, 0, 0, sourceWidth, sourceHeight,
+            x, y, sourceWidth * ratio, sourceHeight * ratio);
       }
       if (full !== null) {
-         full.width = img.width;
-         full.height = img.height;
-         full.getContext('2d').clearRect(0, 0, full.width, full.height);
-         full.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
-            0, 0, img.width, img.height);
+         full.width = sourceWidth;
+         full.height = sourceHeight;
+         full.getContext('2d').clearRect(0, 0, sourceWidth, sourceHeight);
+         full.getContext('2d').drawImage(img, 0, 0, sourceWidth, sourceHeight,
+            0, 0, sourceWidth, sourceHeight);
       }
    }
 
@@ -120,11 +112,31 @@ window.GLPIMediaCapture = new function() {
                location.reload();
             });
          });
-         imageCapture = new ImageCapture(track);
-         imageCapture.grabFrame().then(img => {
-            updateCanvases(img, form_obj.find('#screenshotPreview').get(0), form_obj.find('#screenshotFull').get(0));
-            track.stop();
-         })
+
+         if (typeof ImageCapture !== "undefined") {
+            imageCapture = new ImageCapture(track);
+            imageCapture.grabFrame().then(img => {
+               updateCanvases(img, form_obj.find('#screenshotPreview').get(0), form_obj.find('#screenshotFull').get(0));
+               track.stop();
+            })
+         } else {
+            const video = document.createElement('video');
+            video.srcObject = mediaStream;
+
+            return new Promise((resolve, reject) => {
+               try {
+                  video.addEventListener('loadeddata', event => {
+                     video.play().then(() => {
+                        updateCanvases(video, form_obj.find('#screenshotPreview').get(0), form_obj.find('#screenshotFull').get(0));
+                        track.stop();
+                     });
+                  });
+               } catch(error) {
+                  track.stop();
+                  reject(error);
+               }
+            });
+         }
       });
    }
 
@@ -222,7 +234,7 @@ window.GLPIMediaCapture = new function() {
             }
          }
          recorder.onstart = function() {
-            console.log("Recorder started");
+            // No-op
          }
          // Start recording the video stream
          const startRecording = function() {
@@ -230,7 +242,6 @@ window.GLPIMediaCapture = new function() {
             $(this).parent().append(`<button type="button" name="stop" class="vsubmit">${__('Stop recording')}</button>`);
             $(this).remove();
 
-            console.log("Recording started by button click");
             recorder.start();
          }
          const restartRecording = function() {
