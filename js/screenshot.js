@@ -175,7 +175,7 @@ window.GLPIMediaCapture = new function() {
          const track = mediaStream.getVideoTracks()[0];
 
          let recorder = new MediaRecorder(mediaStream, {
-            mimeType: getRecordingMimeType('video/webm'),
+            mimeType: 'video/webm;codecs='+getRecordingCodec('video/webm'),
             videoBitsPerSecond: getPreferredBitrate(track),
          });
          let blob = null;
