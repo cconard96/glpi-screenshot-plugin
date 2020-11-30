@@ -44,7 +44,7 @@ if (!isset($_POST['itemtype'], $_POST['items_id'], $_POST['format'])) {
 
 $config = Config::getConfigurationValues('plugin:screenshot');
 if ((isset($_POST['img']) && $_POST['format'] !== $config['screenshot_format']) ||
-   (isset($_FILES['blob']) && $_POST['format'] !== $config['screenrecording_format'])) {
+   (isset($_FILES['blob']) && $_POST['format'] !== 'video/webm')) {
    die(400);
 }
 

@@ -64,7 +64,7 @@ class PluginScreenshotScreenshot extends CommonGLPI {
    {
       return [
          'video/webm'   => 'WEBm',
-         'video/mp4'    => 'MP4',
+         //'video/mp4'    => 'MP4',
       ];
    }
 
@@ -74,7 +74,7 @@ class PluginScreenshotScreenshot extends CommonGLPI {
          'image/png'    => 'png',
          'image/jpg'    => 'jpg',
          'video/webm'   => 'webm',
-         'video/mp4'    => 'mp4',
+         //'video/mp4'    => 'mp4',
       ];
       return $mappings[$mime] ?? null;
    }
