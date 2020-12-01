@@ -31,6 +31,21 @@ window.GLPIMediaCapture = new function() {
 
    let config = {};
 
+   function isMobileBrowser() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      return userAgent.match(/ipad|iphone|ipod|android/i);
+   }
+
+   /**
+    * Check if the browser supports this feature. If not, this will hide the timeline button.
+    */
+   this.evalTimelineAction = function() {
+      if (isMobileBrowser()) {
+         $('#attach_screenshot_timeline').hide();
+         $('#attach_screenrecording_timeline').hide();
+      }
+   }
+
    /**
     * Update a preview and full-size canvas based on the supplied image.
     * Each canvas parameter is optional and can be skipped by setting it to null.
