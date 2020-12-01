@@ -50,6 +50,7 @@ class PluginScreenshotScreenshot extends CommonGLPI {
             <i class='fas fa-video'></i>" .
             __("Screen Recording") . "</li>";
       }
+      echo Html::scriptBlock('window.GLPIMediaCapture.evalTimelineAction();');
    }
 
    public static function getScreenshotFormats(): array
