@@ -12,7 +12,9 @@
             <en><![CDATA[
 Take a screenshot directly from GLPI and attach it to a ticket, change or problem. Only works from the timeline for now.
 
-This plugin relies on some WebRTC features that are only available on a few browsers (Some features are still a working draft and not implemented into the W3C standard). It works on Chrome and should work on all other Chromium-based browsers (new Edge, Brave, etc), but doesn't work properly on Firefox.
+This plugin should work on any modern desktop browser, but it won't work on mobile browsers.
+
+Additionally, browsers only expose this feature when it is being used over HTTPS (or running over localhost). If your GLPI server doesn't use HTTPS yet, this plugin will not work.
         ]]></en>
         </long>
     </description>
