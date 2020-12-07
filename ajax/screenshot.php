@@ -50,11 +50,13 @@ if ((isset($_POST['img']) && $_POST['format'] !== $config['screenshot_format']) 
 
 $ext = PluginScreenshotScreenshot::getExtensionForMime($_POST['format']);
 
+$filename_timestamp = str_replace(':', '-', $_SESSION['glpi_currenttime']);
+
 if (isset($_POST['img'])) {
    // Handle screenshot upload
 
    // Name format: Screenshot + Timestamp + random 5 character hex + extension
-   $file_name = 'Screenshot ' . $_SESSION['glpi_currenttime'] . '-' . sprintf('%05X', random_int(0, 1048575)) . '.' . $ext;
+   $file_name = 'Screenshot ' . $filename_timestamp . ' ' . sprintf('%05X', random_int(0, 1048575)) . '.' . $ext;
    if (!Document::isValidDoc($file_name)) {
       Session::addMessageAfterRedirect('Unauthorized file type', false, ERROR);
       die(403);
@@ -62,9 +64,15 @@ if (isset($_POST['img'])) {
 
    $data = file_get_contents($_POST['img']);
    // Save image to tmp
-   $file = fopen(GLPI_TMP_DIR . '/' . $file_name, 'wb');
-   fwrite($file, $data);
-   fclose($file);
+   if (!is_writable(GLPI_TMP_DIR)) {
+      Session::addMessageAfterRedirect('GLPI temp folder is not writable', false, ERROR);
+      die(400);
+   }
+   $bytes_written = file_put_contents(GLPI_TMP_DIR . '/' . $file_name, $data);
+   if ($bytes_written === false) {
+      Session::addMessageAfterRedirect('Screenshot upload failed', false, ERROR);
+      die(400);
+   }
 
    // Add document and link. Adding the document will cleanup the temp file for us.
    $doc = new Document();
@@ -80,7 +88,7 @@ if (isset($_POST['img'])) {
    ]);
 
 // In case something fails and the temp file remains, remove it
-   if (file_exists(GLPI_TMP_DIR . '/' . $file_name)) {
+   if (!empty($file_name) && file_exists(GLPI_TMP_DIR . '/' . $file_name)) {
       unlink(GLPI_TMP_DIR . '/' . $file_name);
    }
 } else if (isset($_FILES['blob'])) {
@@ -88,7 +96,7 @@ if (isset($_POST['img'])) {
    Session::checkRight('plugin_screenshot_recording', CREATE);
 
    // Name format: Screen Recording + Timestamp + random 5 character hex + extension
-   $file_name = 'Screen Recording ' . $_SESSION['glpi_currenttime'] . '-' . sprintf('%05X', random_int(0, 1048575)) . '.' . $ext;
+   $file_name = 'Screen Recording ' . $filename_timestamp . ' ' . sprintf('%05X', random_int(0, 1048575)) . '.' . $ext;
    if (!Document::isValidDoc($file_name)) {
       Session::addMessageAfterRedirect('Unauthorized file type', false, ERROR);
       die(403);
