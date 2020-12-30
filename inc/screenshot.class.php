@@ -44,11 +44,11 @@ class PluginScreenshotScreenshot extends CommonGLPI {
 
       echo "<li class='followup' id='attach_screenshot_timeline' data-editpanel='$edit_panel' data-itemtype='{$itilitem::getType()}' data-items_id='{$itilitem->getID()}'>
             <i class='fas fa-camera'></i>".
-         __("Screenshot")."</li>";
+         __("Screenshot", 'screenshot')."</li>";
       if (Session::haveRight('plugin_screenshot_recording', CREATE)) {
          echo "<li class='followup' id='attach_screenrecording_timeline' data-editpanel='$edit_panel' data-itemtype='{$itilitem::getType()}' data-items_id='{$itilitem->getID()}'>
             <i class='fas fa-video'></i>" .
-            __("Screen Recording") . "</li>";
+            __("Screen Recording", 'screenshot') . "</li>";
       }
       echo Html::scriptBlock('window.GLPIMediaCapture.evalTimelineAction();');
    }
