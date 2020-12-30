@@ -1,5 +1,13 @@
 # Screenshot
 
+## [1.1.2]
+- Add locales
+  - en_GB
+  - en_US
+  - es_ES
+  - fr_FR
+  - pt_PT
+
 ## [1.1.1]
 - Added compatibility for Firefox. This plugin still doesn't work in mobile browsers.
 - Fixed an issued with the file names used by the plugin that caused screenshot and screen recording uploads to fail on Windows servers.
