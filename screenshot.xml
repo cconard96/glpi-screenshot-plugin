@@ -49,6 +49,10 @@ Additionally, browsers only expose this feature when it is being used over HTTPS
     </versions>
     <langs>
         <lang>en_GB</lang>
+        <lang>en_US</lang>
+        <lang>es_ES</lang>
+        <lang>fr_FR</lang>
+        <lang>pt_PT</lang>
     </langs>
     <license>GPLv2+</license>
     <tags>
