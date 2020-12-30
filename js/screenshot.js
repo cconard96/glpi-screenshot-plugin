@@ -101,7 +101,7 @@ window.GLPIMediaCapture = new function() {
                </tr>
                <tr>
                    <td>
-                       <button type="submit" name="upload" class="vsubmit">${__('Upload')}</button>
+                       <button type="submit" name="upload" class="vsubmit">${__('Upload', 'screenshot')}</button>
                    </td>
                </tr>
             </table>
@@ -201,8 +201,8 @@ window.GLPIMediaCapture = new function() {
             tracks.forEach(function(track) {
                track.stop();
             });
-            //$(this).parent().append(`<button type="button" name="restart" class="vsubmit">${__('Restart recording')}</button>`);
-            $(this).parent().append(`<button type="button" name="upload" class="vsubmit">${__('Upload')}</button>`);
+            //$(this).parent().append(`<button type="button" name="restart" class="vsubmit">${__('Restart recording', 'screenshot')}</button>`);
+            $(this).parent().append(`<button type="button" name="upload" class="vsubmit">${__('Upload', 'screenshot')}</button>`);
             $(this).remove();
          }
          const upload = function() {
@@ -246,7 +246,7 @@ window.GLPIMediaCapture = new function() {
          // Start recording the video stream
          const startRecording = function() {
             edit_panel.find('button:not([name="start"])').remove();
-            $(this).parent().append(`<button type="button" name="stop" class="vsubmit">${__('Stop recording')}</button>`);
+            $(this).parent().append(`<button type="button" name="stop" class="vsubmit">${__('Stop recording', 'screenshot')}</button>`);
             $(this).remove();
 
             recorder.start();
@@ -275,7 +275,7 @@ window.GLPIMediaCapture = new function() {
             </tr>
             <tr>
                 <td>
-                    <button type="button" name="start" class="vsubmit">${__('Start recording')}</button>
+                    <button type="button" name="start" class="vsubmit">${__('Start recording', 'screenshot')}</button>
                 </td>
             </tr>
          </table>
