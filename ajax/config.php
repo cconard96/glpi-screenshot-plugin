@@ -2,7 +2,7 @@
 /*
  -------------------------------------------------------------------------
  Screenshot
- Copyright (C) 2020 by Curtis Conard
+ Copyright (C) 2020-2021 by Curtis Conard
  https://github.com/cconard96/glpi-screenshot-plugin
  -------------------------------------------------------------------------
  LICENSE
