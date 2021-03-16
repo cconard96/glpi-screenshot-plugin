@@ -107,4 +107,12 @@ class PluginScreenshotMigration
    {
       $this->glpiMigration->addRight('plugin_screenshot_recording', CREATE);
    }
+
+   private function apply_1_1_3_migration()
+   {
+      // Add previously missing default format
+      $this->glpiMigration->addConfig([
+         'screenshot_format' => 'image/png'
+      ], 'plugin:screenshot');
+   }
 }
