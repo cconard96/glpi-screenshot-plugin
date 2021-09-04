@@ -1,5 +1,8 @@
 # Screenshot
 
+## [1.1.4]
+- Added Portuguese (BR) and Russian locales
+
 ## [1.1.3]
 - Added missing default config values to the database.
   The missing formats caused the screenshot upload to fail silently unless you saved or changed the format option.
