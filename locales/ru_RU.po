@@ -5,47 +5,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: Screenshot Plugin for GLPI\n"
-"Language: en\n"
+"Language: ru\n"
 
 #: inc/screenshot.class.php:47 inc/config.class.php:31 inc/profile.class.php:30
 #: inc/profile.class.php:67 setup.php:40
 msgid "Screenshot"
-msgstr "Screenshot"
+msgstr "Сделать и приложить снимок экрана"
 
 #: inc/screenshot.class.php:51
 msgid "Screen Recording"
-msgstr "Screen Recording"
+msgstr "Записать и приложить видео Ваших действий"
 
 #: inc/config.class.php:46
 msgid "Screenshot Settings"
-msgstr "Screenshot Settings"
+msgstr "Настройки съёмки экрана"
 
 #: inc/config.class.php:49
 msgid "Screenshot Format"
-msgstr "Screenshot Format"
+msgstr "Формат файла для снимка экрана"
 
 #: inc/config.class.php:60 inc/profile.class.php:73
 msgctxt "button"
 msgid "Save"
-msgstr "Save"
+msgstr "Сохранить"
 
 #: inc/profile.class.php:60
 msgid "Screen recordings"
-msgstr "Screen recordings"
+msgstr "Право создавать записи видео Ваших действий"
 
 #: inc/profile.class.php:63
 msgid "Create"
-msgstr "Create"
+msgstr "Создать"
 
 #: js/screenshot.js:104 js/screenshot.js:205
 msgid "Upload"
-msgstr "Upload"
+msgstr "!!! Снимок/запись пока ещё только на Вашем ПК! Нажмите эту кнопку, чтобы передать на сервер... !!!"
 
 #: js/screenshot.js:249
 msgid "Stop recording"
-msgstr "Stop recording"
+msgstr "СТОП! ( ...окончить записывать видео Ваших действий.)"
 
 #: js/screenshot.js:278
 msgid "Start recording"
-msgstr "Start recording"
+msgstr "СТАРТ! (Начать записывать видео Ваших действий... )"
 
