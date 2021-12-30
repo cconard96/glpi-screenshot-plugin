@@ -1,5 +1,8 @@
 # Screenshot
 
+## [2.0.0 Beta 1]
+- GLPI v10.0 Compatibility
+
 ## [1.1.4]
 - Added Portuguese (BR) and Russian locales
 
