@@ -282,6 +282,16 @@ window.GLPIMediaCapture = new function() {
       `);
    }
 
+   function insertEditForm(type) {
+      const timeline_content = $('.itil-timeline');
+      return $(`
+<div id="${type}EditPanel" class="itil-timeline-edit-panel">
+    <div class="timeline-item mb-3 ${type} collapse show" aria-expanded="true" data-bs-parent="#${type}EditPanel">
+    
+    </div>
+</div>`).appendTo(timeline_content);
+   }
+
    // Get Config
    $.ajax({
       type: 'GET',
@@ -291,14 +301,20 @@ window.GLPIMediaCapture = new function() {
    });
 
    $(document).on('click', '#attach_screenshot_timeline', function() {
-      const edit_panel = $($(this).data('editpanel'));
+      let edit_panel = $($(this).data('editpanel'));
+      if (edit_panel.length === 0) {
+         edit_panel = insertEditForm('screenshot');
+      }
       const itemtype = $(this).data('itemtype');
       const items_id = $(this).data('items_id');
       captureScreenshot(edit_panel, itemtype, items_id);
    });
 
    $(document).on('click', '#attach_screenrecording_timeline', function() {
-      const edit_panel = $($(this).data('editpanel'));
+      let edit_panel = $($(this).data('editpanel'));
+      if (edit_panel.length === 0) {
+         edit_panel = insertEditForm('screenrecording');
+      }
       const itemtype = $(this).data('itemtype');
       const items_id = $(this).data('items_id');
       showRecordingForm(edit_panel, itemtype, items_id);
