@@ -2,8 +2,14 @@
   "require": {
     "php": "^7.2"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/cconard96/tools"
+    }
+  ],
   "require-dev": {
-    "glpi-project/tools": "^0.1"
+    "glpi-project/tools": "dev-debug/master"
   },
   "config": {
     "optimize-autoloader": true,
