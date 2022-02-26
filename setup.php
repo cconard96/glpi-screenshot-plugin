@@ -28,10 +28,13 @@ function plugin_init_screenshot()
 {
 	global $PLUGIN_HOOKS;
 	$PLUGIN_HOOKS['csrf_compliant']['screenshot'] = true;
-   $PLUGIN_HOOKS['timeline_actions']['screenshot'] = [PluginScreenshotScreenshot::class, 'timelineActions'];
-   $PLUGIN_HOOKS['add_javascript']['screenshot'][] = 'js/screenshot.js';
-   Plugin::registerClass('PluginScreenshotConfig', ['addtabon' => 'Config']);
-   Plugin::registerClass('PluginScreenshotProfile', ['addtabon' => 'Profile']);
+   if (Plugin::isPluginActive('screenshot')) {
+      $PLUGIN_HOOKS['timeline_actions']['screenshot'] = [PluginScreenshotScreenshot::class, 'timelineActions'];
+      $PLUGIN_HOOKS['add_javascript']['screenshot'][] = 'js/screenshot.js';
+      Plugin::registerClass('PluginScreenshotConfig', ['addtabon' => 'Config']);
+      Plugin::registerClass('PluginScreenshotProfile', ['addtabon' => 'Profile']);
+      Profile::$helpdesk_rights[] = 'plugin_screenshot_recording';
+   }
 }
 
 function plugin_version_screenshot()
