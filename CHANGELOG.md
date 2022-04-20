@@ -1,6 +1,6 @@
 # Screenshot
 
-## [2.0.0 Beta 1]
+## [2.0.0]
 - GLPI v10.0 Compatibility
 
 ## [1.1.4]
