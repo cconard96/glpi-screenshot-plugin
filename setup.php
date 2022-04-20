@@ -20,9 +20,9 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_SCREENSHOT_VERSION', '1.1.6');
+define('PLUGIN_SCREENSHOT_VERSION', '1.1.7');
 define('PLUGIN_SCREENSHOT_MIN_GLPI', '9.5.0');
-define('PLUGIN_SCREENSHOT_MAX_GLPI', '10.1.0');
+define('PLUGIN_SCREENSHOT_MAX_GLPI', '9.6.0');
 
 function plugin_init_screenshot()
 {
