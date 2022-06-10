@@ -87,8 +87,8 @@ if (isset($_POST['img'])) {
       'items_id'     => $_POST['items_id'],
    ]);
 
-// In case something fails and the temp file remains, remove it
-   if (!empty($file_name) && file_exists(GLPI_TMP_DIR . '/' . $file_name)) {
+   // In case something fails and the temp file remains, remove it
+   if (file_exists(GLPI_TMP_DIR . '/' . $file_name)) {
       unlink(GLPI_TMP_DIR . '/' . $file_name);
    }
 } else if (isset($_FILES['blob'])) {

@@ -25,19 +25,28 @@ class PluginScreenshotProfile extends CommonGLPI
 {
    public static $rightname = "config";
 
-   public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+   public function getTabNameForItem(CommonGLPI $item, $withtemplate = false)
    {
-      return self::createTabEntry(__('Screenshot', 'screenshot'));
+      return __('Screenshot', 'screenshot');
    }
 
-   public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+   public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = false)
    {
-      $profile = new self();
-      $profile->showForm($item->getID());
-      return true;
+      if ($item instanceof CommonDBTM) {
+         $profile = new self();
+         $profile->showForm($item->getID());
+         return true;
+      }
+      return false;
    }
 
-   public function showForm($profiles_id = 0, $openform = true, $closeform = true)
+   /**
+    * @param int $profiles_id
+    * @param bool $openform
+    * @param bool $closeform
+    * @return false|void
+    */
+   public function showForm(int $profiles_id = 0, bool $openform = true, bool $closeform = true)
    {
       if (!self::canView()) {
          return false;
