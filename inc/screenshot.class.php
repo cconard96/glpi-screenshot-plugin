@@ -22,7 +22,11 @@
 
 class PluginScreenshotScreenshot extends CommonGLPI {
 
-   public static function timelineActions($params)
+   /**
+    * @param array{rand: string, item: CommonITILObject} $params
+    * @return false|void
+    */
+   public static function timelineActions(array $params)
    {
       $rand   = $params['rand'];
       $itilitem = $params['item'];
@@ -32,9 +36,9 @@ class PluginScreenshotScreenshot extends CommonGLPI {
       $fup->fields['itemtype'] = $itilitem::getType();
       $fup->fields['items_id'] = $itilitem->getID();
       $canadd_fup = $fup->can(-1, CREATE, $tmp) &&
-         !in_array($itilitem->fields["status"], array_merge($itilitem->getSolvedStatusArray(), $itilitem->getClosedStatusArray()), true);
+         !in_array($itilitem->fields["status"], array_merge($itilitem::getSolvedStatusArray(), $itilitem::getClosedStatusArray()), true);
       $canadd_document = $canadd_fup || ($itilitem->canAddItem('Document') &&
-            !in_array($itilitem->fields["status"], array_merge($itilitem->getSolvedStatusArray(), $itilitem->getClosedStatusArray()), true));
+            !in_array($itilitem->fields["status"], array_merge($itilitem::getSolvedStatusArray(), $itilitem::getClosedStatusArray()), true));
 
       if (!$canadd_document) {
          return false;
@@ -53,6 +57,9 @@ class PluginScreenshotScreenshot extends CommonGLPI {
       echo Html::scriptBlock('window.GLPIMediaCapture.evalTimelineAction();');
    }
 
+   /**
+    * @return array<string, string>
+    */
    public static function getScreenshotFormats(): array
    {
       return [
@@ -61,6 +68,9 @@ class PluginScreenshotScreenshot extends CommonGLPI {
       ];
    }
 
+   /**
+    * @return array<string, string>
+    */
    public static function getScreenRecordingFormats(): array
    {
       return [
