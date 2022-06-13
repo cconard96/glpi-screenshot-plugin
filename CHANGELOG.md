@@ -1,5 +1,8 @@
 # Screenshot
 
+## [2.0.1]
+-Added Italian (IT) locales
+
 ## [2.0.0]
 - GLPI v10.0 Compatibility
 
