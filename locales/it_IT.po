@@ -5,7 +5,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
 "Project-Id-Version: Screenshot Plugin for GLPI\n"
-"Language: en\n"
+"Language: it\n"
 
 #: inc/screenshot.class.php:47 inc/config.class.php:31 inc/profile.class.php:30
 #: inc/profile.class.php:67 setup.php:40
@@ -14,38 +14,38 @@ msgstr "Screenshot"
 
 #: inc/screenshot.class.php:51
 msgid "Screen Recording"
-msgstr "Screen Recording"
+msgstr "Registrazione"
 
 #: inc/config.class.php:46
 msgid "Screenshot Settings"
-msgstr "Screenshot Settings"
+msgstr "Impostazioni screenshot"
 
 #: inc/config.class.php:49
 msgid "Screenshot Format"
-msgstr "Screenshot Format"
+msgstr "Formato screenshot"
 
 #: inc/config.class.php:60 inc/profile.class.php:73
 msgctxt "button"
 msgid "Save"
-msgstr "Save"
+msgstr "Salva"
 
 #: inc/profile.class.php:60
 msgid "Screen recordings"
-msgstr "Screen recordings"
+msgstr "Registrazioni"
 
 #: inc/profile.class.php:63
 msgid "Create"
-msgstr "Create"
+msgstr "Crea"
 
 #: js/screenshot.js:104 js/screenshot.js:205
 msgid "Upload"
-msgstr "Upload"
+msgstr "Carica"
 
 #: js/screenshot.js:249
 msgid "Stop recording"
-msgstr "Stop recording"
+msgstr "Ferma registrazione"
 
 #: js/screenshot.js:278
 msgid "Start recording"
-msgstr "Start recording"
+msgstr "Inizia registrazione"
 
