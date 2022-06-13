@@ -1,5 +1,18 @@
 # Screenshot
 
+## [1.1.7]
+- Fixed permission handling for simplified interface users
+- Added Italian (IT) locales
+
+## [1.1.6]
+- Fixed HTTPS check for web servers behind a reverse proxy.
+
+## [1.1.5]
+Release removed. See 1.1.6 notes for changes.
+
+## [1.1.4]
+- Added Portuguese (BR) and Russian locales
+
 ## [1.1.3]
 - Added missing default config values to the database.
   The missing formats caused the screenshot upload to fail silently unless you saved or changed the format option.
