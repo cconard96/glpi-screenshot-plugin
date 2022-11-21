@@ -31,8 +31,6 @@ if (!$plugin->isActivated('screenshot')) {
 
 Html::header_nocache();
 
-Session::checkLoginUser();
-
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
    // Bad request method
    die(405);
