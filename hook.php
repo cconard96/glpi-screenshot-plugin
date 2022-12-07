@@ -22,10 +22,6 @@
 
 function plugin_screenshot_install()
 {
-   if (empty($_SERVER['HTTPS']) && !in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
-      echo 'This plugin requires GLPI be served over HTTPS';
-      return false;
-   }
    $migration = new PluginScreenshotMigration(PLUGIN_SCREENSHOT_VERSION);
    $migration->applyMigrations();
 	return true;
