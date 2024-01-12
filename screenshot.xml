@@ -86,14 +86,21 @@ Additionally, browsers only expose this feature when it is being used over HTTPS
             <compatibility>~10.0.0</compatibility>
             <download_url>https://github.com/cconard96/glpi-screenshot-plugin/releases/download/v2.0.2/glpi-screenshot-v2.0.2.tar.bz2</download_url>
         </version>
+        <version>
+            <num>2.0.3</num>
+            <compatibility>~10.0.0</compatibility>
+            <download_url>https://github.com/cconard96/glpi-screenshot-plugin/releases/download/v2.0.3/glpi-screenshot-v2.0.3.tar.bz2</download_url>
+        </version>
     </versions>
     <langs>
         <lang>en_GB</lang>
         <lang>en_US</lang>
+        <lang>es_AR</lang>
         <lang>es_ES</lang>
         <lang>fr_FR</lang>
         <lang>pt_PT</lang>
         <lang>it_IT</lang>
+        <lang>ja_JP</lang>
     </langs>
     <license>GPLv2+</license>
     <tags>
