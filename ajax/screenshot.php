@@ -33,19 +33,22 @@ Session::checkLoginUser();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
    // Bad request method
-   die(405);
+    http_response_code(405);
+   die();
 }
 if (!isset($_POST['itemtype'], $_POST['items_id'], $_POST['format'])) {
    if (!isset($_POST['img']) || !isset($_FILES['blob'])) {
       // Missing required data
-      die(400);
+       http_response_code(400);
+      die();
    }
 }
 
 $config = Config::getConfigurationValues('plugin:screenshot');
 if ((isset($_POST['img']) && $_POST['format'] !== $config['screenshot_format']) ||
    (isset($_FILES['blob']) && $_POST['format'] !== 'video/webm')) {
-   die(400);
+    http_response_code(400);
+   die();
 }
 
 $ext = PluginScreenshotScreenshot::getExtensionForMime($_POST['format']);
@@ -54,25 +57,32 @@ $filename_timestamp = str_replace(':', '-', $_SESSION['glpi_currenttime']);
 
 if (isset($_POST['img'])) {
    // Handle screenshot upload
+    if (PluginScreenshotScreenshot::isValidScreenshot($_POST['img']) === false) {
+        Session::addMessageAfterRedirect('Unauthorized screenshot format', false, ERROR);
+        http_response_code(403);
+        die();
+    }
 
-   // Name format: Screenshot + Timestamp + random 5 character hex + extension
-   $file_name = 'Screenshot ' . $filename_timestamp . ' ' . sprintf('%05X', random_int(0, 1048575)) . '.' . $ext;
-   if (!Document::isValidDoc($file_name)) {
-      Session::addMessageAfterRedirect('Unauthorized file type', false, ERROR);
-      die(403);
-   }
-
-   $data = file_get_contents($_POST['img']);
-   // Save image to tmp
-   if (!is_writable(GLPI_TMP_DIR)) {
-      Session::addMessageAfterRedirect('GLPI temp folder is not writable', false, ERROR);
-      die(400);
-   }
-   $bytes_written = file_put_contents(GLPI_TMP_DIR . '/' . $file_name, $data);
-   if ($bytes_written === false) {
-      Session::addMessageAfterRedirect('Screenshot upload failed', false, ERROR);
-      die(400);
-   }
+    // Name format: Screenshot + Timestamp + random 5 character hex + extension
+    $file_name = 'Screenshot ' . $filename_timestamp . ' ' . sprintf('%05X', random_int(0, 1048575)) . '.' . $ext;
+    if (!Document::isValidDoc($file_name)) {
+        Session::addMessageAfterRedirect('Unauthorized file type', false, ERROR);
+        http_response_code(403);
+        die();
+    }
+    $data = file_get_contents($_POST['img']);
+    // Save image to tmp
+    if (!is_writable(GLPI_TMP_DIR)) {
+        Session::addMessageAfterRedirect('GLPI temp folder is not writable', false, ERROR);
+        http_response_code(500);
+        die();
+    }
+    $bytes_written = file_put_contents(GLPI_TMP_DIR . '/' . $file_name, $data);
+    if ($bytes_written === false) {
+        Session::addMessageAfterRedirect('Screenshot upload failed', false, ERROR);
+        http_response_code(500);
+        die();
+    }
 
    // Add document and link. Adding the document will cleanup the temp file for us.
    $doc = new Document();
@@ -95,11 +105,18 @@ if (isset($_POST['img'])) {
    // Handle screen recording upload
    Session::checkRight('plugin_screenshot_recording', CREATE);
 
+   if (!PluginScreenshotScreenshot::isValidScreenRecording($_FILES['blob']['tmp_name'])) {
+      Session::addMessageAfterRedirect('Unauthorized screen recording format', false, ERROR);
+      http_response_code(403);
+      die();
+   }
+
    // Name format: Screen Recording + Timestamp + random 5 character hex + extension
    $file_name = 'Screen Recording ' . $filename_timestamp . ' ' . sprintf('%05X', random_int(0, 1048575)) . '.' . $ext;
    if (!Document::isValidDoc($file_name)) {
       Session::addMessageAfterRedirect('Unauthorized file type', false, ERROR);
-      die(403);
+      http_response_code(403);
+      die();
    }
 
    $data = $_FILES['blob'];

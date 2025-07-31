@@ -22,6 +22,40 @@
 
 class PluginScreenshotScreenshot extends CommonGLPI {
 
+    public static function isValidScreenshot(string $file)
+    {
+        if (!str_starts_with($_POST['img'], 'data:')) {
+            return false;
+        }
+        $config = Config::getConfigurationValues('plugin:screenshot');
+        $screenshot_format = $config['screenshot_format'];
+
+        // Security check the actual data is at least an image
+        if (extension_loaded('exif')) {
+            $etype = exif_imagetype($file);
+            $exif_types = [
+                'image/jpeg' => IMAGETYPE_JPEG,
+                'image/png'  => IMAGETYPE_PNG,
+                'image/webp' => IMAGETYPE_WEBP,
+            ];
+            if ($etype !== $exif_types[$screenshot_format]) {
+                return false;
+            }
+        } else {
+            $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+            if (finfo_file($fileinfo, $file) !== $screenshot_format) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static function isValidScreenRecording(string $file_path)
+    {
+        $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+        return finfo_file($fileinfo, $file_path) === 'video/webm';
+    }
+
    /**
     * @param array{rand: string, item: CommonITILObject} $params
     * @return false|void
