@@ -1,21 +1,15 @@
 {
-  "require": {
-    "php": "^7.4"
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/cconard96/tools"
-    }
-  ],
-  "require-dev": {
-    "glpi-project/tools": "dev-debug/master"
-  },
-  "config": {
-    "optimize-autoloader": true,
-    "platform": {
-      "php": "7.4.0"
+    "require": {
+        "php": "^7.4"
     },
-    "sort-packages": true
-  }
+    "config": {
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.4.0"
+        },
+        "sort-packages": true
+    },
+    "require-dev": {
+        "glpi-project/tools": "^0.8.1"
+    }
 }

@@ -20,7 +20,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_SCREENSHOT_VERSION', '2.0.4');
+define('PLUGIN_SCREENSHOT_VERSION', '2.0.5');
 define('PLUGIN_SCREENSHOT_MIN_GLPI', '10.0.0');
 define('PLUGIN_SCREENSHOT_MAX_GLPI', '10.1.0');
 
