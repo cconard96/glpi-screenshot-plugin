@@ -1,6 +1,10 @@
 # Screenshot Plugin for GLPI
 [![CodeFactor](https://www.codefactor.io/repository/github/cconard96/glpi-screenshot-plugin/badge)](https://www.codefactor.io/repository/github/cconard96/glpi-screenshot-plugin)
 
+## /!\ This plugin is approaching end of life /!\
+The functionality provided by this plugin was implemented directly into GLPI 11.
+Short of a security vulnerability or major breaking bug, there will be no further releases.
+
 Take a screenshot or screen recording directly from GLPI and attach it to a ticket, change or problem. Only works from the timeline for now.
 
 This plugin should work on any modern desktop browser, but it won't work on mobile browsers.
