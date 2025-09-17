@@ -76,6 +76,7 @@ Additionally, browsers only expose this feature when it is being used over HTTPS
         <lang>pt_PT</lang>
         <lang>it_IT</lang>
         <lang>ja_JP</lang>
+        <lang>tr_TR</lang>
     </langs>
     <license>GPLv2+</license>
     <tags>
